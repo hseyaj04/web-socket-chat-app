@@ -1,0 +1,20 @@
+{
+  "name": "web-socket-chat-app",
+  "version": "1.0.0",
+  "description": "learning socket.io",
+  "keywords": [
+    "socket.io",
+    "node.js"
+  ],
+  "license": "ISC",
+  "author": "Jayesh",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "nodemon": "^3.1.9"
+  }
+}
