@@ -14,12 +14,15 @@ app.get('/', (req, res) => {
     res.sendFile(join(__dirname, 'index.html'));
 })
 
+
+
+io.emit('hello', 'world') //emits event to all connected sockets
+
 io.on('connection', (socket) => {
-    // console.log("a user connected");
     socket.on('chat message', (msg) => {
-        console.log(msg);
-    })
-})
+      io.emit('chat message', msg);
+    });
+  });
 
 server.listen(3000, () => {
     console.log("listening at port http://localhost:3000");
