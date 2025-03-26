@@ -11,7 +11,7 @@
       #input:focus { outline: none; }
       #form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
 
-      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages { list-style-type: none; margin: 0; padding: 0}
       #messages > li { padding: 0.5rem 1rem; }
       #messages > li:nth-child(odd) { background: #efefef; }
     </style>
@@ -19,7 +19,10 @@
   <body>
     <ul id="messages"></ul>
     <form id="form" action="">
-      <input id="input" autocomplete="off" /><button>Send</button>
+      <input id="input" autocomplete="off" />
+      <button>Send</button>
+      <button id="connection-button">Disconnect</button>
+
     </form>
 
     <script src="/socket.io/socket.io.js"></script>
@@ -29,11 +32,24 @@
         const form = document.getElementById('form');
         const input = document.getElementById('input');
         const messages = document.getElementById('messages')
+        const connection_button = document.getElementById('connection-button')
 
 
-
-
-
+        connection_button.addEventListener('click', (e) => {
+          e.preventDefault();
+          // console.log(connection_button.innerText);
+          if(socket.connected){
+            connection_button.innerText = "Connect"
+            socket.disconnect();
+            console.log("disconnected");
+            
+          }
+          else{
+            connection_button.innerText = "Disconnect"
+            socket.connect();
+          }
+        })
+        
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             if (input.value) {
