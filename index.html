@@ -27,7 +27,11 @@
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        const socket = io();
+        const socket = io({
+          auth: {
+            serverOffset: 0
+          }
+        });
 
         const form = document.getElementById('form');
         const input = document.getElementById('input');
@@ -37,17 +41,33 @@
 
         connection_button.addEventListener('click', (e) => {
           e.preventDefault();
+          let msg;
+          // // console.log(connection_button.innerText);
+          // if(socket.connected){
+          //   connection_button.innerText = "Connect"
+          //   socket.disconnect();
+          //   msg = "someone disconnected"
+          // }
+          // else{
+          //   connection_button.innerText = "Disconnect"
+          //   socket.connect();
+          //   msg = 'someone connected'
+          // }
           // console.log(connection_button.innerText);
           if(socket.connected){
             connection_button.innerText = "Connect"
+            msg = "someone disconnected"
+            socket.emit('chat message', msg, 0)
             socket.disconnect();
-            console.log("disconnected");
-            
           }
           else{
             connection_button.innerText = "Disconnect"
+            msg = 'someone connected'
+            socket.emit('chat message', msg, 1)
             socket.connect();
+            
           }
+          
         })
         
         form.addEventListener('submit', (e) => {
@@ -59,12 +79,29 @@
         });
 
 
-        socket.on('chat message', (msg) => {
+        socket.on('chat message', (msg, serverOffset) => {
             const item = document.createElement('li')
             item.textContent = msg;
             messages.appendChild(item)
             window.scrollTo(0, document.body.scrollHeight)
+            socket.auth.serverOffset = serverOffset
         })
+
+        // socket.on('connection message', (msg, flag, serverOffset) => {
+        //   const item = document.createElement('li')
+        //   if(flag === 0){
+        //     item.style.backgroundColor = '#FF5733'
+        //     flag = 1;
+        //   }
+        //   else{            
+        //     item.style.backgroundColor = '#DAF7A6'
+        //     flag = 0;
+        //   }
+        //     item.textContent = msg;
+        //     messages.appendChild(item)
+        //     window.scrollTo(0, document.body.scrollHeight)
+        //     socket.auth.serverOffset = serverOffset
+        // })
             
         
     </script>
